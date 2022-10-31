@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <meta charset="utf8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="refresh" content="30">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </head>
+    <style>
+        body {
+            background-color: #004052;
+        }
+        /* width */
+        ::-webkit-scrollbar {
+        width: 20px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+        background: #002833; 
+        }
+        
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+        background: #06cdef; 
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+        background: #04daff; 
+        }
+    </style>
+    <body class="container align-middle h-100 mx-auto text-white">
+        <table class="table table-striped text-white">
+            <tr class="thead-dark" style="position:sticky; top:0;">
+                <th>ID</th>
+                <th>Temperature</th>
+                <th>Humididty</th>
+                <th>Time</th>
+            </tr>
+            <?php
+            date_default_timezone_set("asia/taipei");
+            $dsn='mysql:host=127.0.0.1;dbname=C100E030';
+            try {
+                            $db=new PDO($dsn,'C100E030','raspberrypi');
+                            $db->exec("set names utf8");
+                    $sql="select * from DHT order by Time desc;";
+                    foreach ($db->query($sql) as $row) {
+                            echo "<tr>";
+                            echo " <td>".$row["ID"]."</td>";
+                            echo " <td>".$row["Temp"]."</td>";
+                            echo " <td>".$row["Humidity"]."</td>";
+                    echo " <td>".$row["Time"]."</td>";
+                            echo "</tr>";
+                    }
+            } catch (PDOException $e) {
+                    printf("DATABASER_ERRMESG: %s",$e->getMessage());
+            }
+            ?>
+        </table>
+    </body>
+</html>
+
